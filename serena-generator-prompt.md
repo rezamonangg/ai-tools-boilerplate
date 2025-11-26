@@ -5,7 +5,9 @@ Your task is to GENERATE AND WRITE `.serena/project.yml`.
 This task has a HARD FAILURE MODE.
 
 =====================
+
 HARD CONSTRAINTS
+
 =====================
 
 You MUST NOT:
@@ -17,7 +19,9 @@ You MUST NOT:
 If ANY forbidden action would be required, you MUST fall back to MINIMAL CONFIG.
 
 =====================
+
 ALLOWED SCHEMA ONLY
+
 =====================
 
 Top-level keys allowed:
@@ -51,6 +55,8 @@ Minimal config MUST be:
 ```yaml
 project:
   name: <exact repo root name>
+
+language: ${language}
 
 language_server:
   enabled: true
