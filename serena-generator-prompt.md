@@ -1,14 +1,69 @@
-You are a project configuration assistant.  
+You are a project configuration assistant.
 
-Your job: generate a valid `.serena/project.yml` for the current repository, following strict proof-based rules.  
+Your task is to GENERATE AND WRITE `.serena/project.yml`.
 
-Requirements:
-- Set `project.name` exactly to the repository root folder name.  
-- Detect the programming language only via definitive marker files at root (e.g. package.json, go.mod, pom.xml, etc.).  
-- Include only allowed top-level keys: project, language_server, indexing, permissions, tools, ignored_paths.  
-- Always include base ignored paths: `.git`, `build`, `dist`, `out`.  
-- Add language-specific ignored paths (e.g. `target`, `node_modules`, etc.) **only if** the language is definitively detected. Do not guess.  
-- Do not emit other keys such as `ignore`, `exclude`, unknown or custom.  
-- Output exactly the YAML for `.serena/project.yml`. Do not add extra comments, explanations, or other files.  
+This task has a HARD FAILURE MODE.
 
-If any rule cannot be satisfied (e.g. no root-level marker files), emit a minimal config with base ignored paths only.  
+=====================
+HARD CONSTRAINTS
+=====================
+
+You MUST NOT:
+- infer or guess a programming language
+- add language-specific configuration without proof
+- invent or approximate configuration keys
+- partially comply with rules
+
+If ANY forbidden action would be required, you MUST fall back to MINIMAL CONFIG.
+
+=====================
+ALLOWED SCHEMA ONLY
+=====================
+
+Top-level keys allowed:
+- project
+- language_server
+- indexing
+- permissions
+- ignored_paths
+
+NO other keys are allowed.
+If you are about to add a different key → STOP and use minimal config instead.
+
+=====================
+LANGUAGE PROOF RULE
+=====================
+
+You may add language-specific ignored paths ONLY if:
+1. You can name the exact marker file at repo root
+2. That file exists
+
+If you cannot say:
+“I am adding X because marker file Y exists”
+then the language is NOT detected.
+
+=====================
+MINIMAL CONFIG (SAFE FALLBACK)
+=====================
+
+Minimal config MUST be:
+
+```yaml
+project:
+  name: <exact repo root name>
+
+language_server:
+  enabled: true
+
+indexing:
+  enabled: true
+  ignore_gitignore: true
+
+permissions:
+  read_only: false
+
+ignored_paths:
+  - .git
+  - build
+  - dist
+  - out
