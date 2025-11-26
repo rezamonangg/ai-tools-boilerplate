@@ -423,35 +423,251 @@ vs 189k if used Vector DB for exact search ❌
 
 ---
 
-## SECTION 7: DO's
+## SECTION 7: DO's (Fully Generic)
 
-[Copy generic DO's from previous prompt]
+### Code Quality
 
-**Add this:**
+**Follow Language/Framework Best Practices**
+- Use idiomatic patterns for the language
+- Follow framework conventions and lifecycle
+- Use appropriate data structures and algorithms
+- Write clean, readable code
+- Follow SOLID principles where applicable
 
-```markdown
+**Use Structured Logging**
+- Include relevant context (IDs, operation names, user info)
+- Use appropriate log levels (DEBUG, INFO, WARN, ERROR)
+- Log significant events and state changes
+- Make logs searchable and actionable
+- Include timestamps and trace IDs
+
+**Handle Errors Gracefully**
+- Catch and handle exceptions appropriately
+- Log errors with full context and stack traces
+- Return user-friendly error messages
+- Never expose internal errors or stack traces to end users
+- Use error codes for categorization
+- Implement retry logic for transient failures
+
+**Protect Sensitive Data**
+- Never log passwords, tokens, or API keys
+- Mask PII (emails, phone numbers, addresses, credit cards)
+- Encrypt sensitive data at rest and in transit
+- Be cautious with business-sensitive data
+- Follow data protection regulations (GDPR, CCPA, etc.)
+- Use secure credential storage (vaults, environment variables)
+
+**Pass Context Through Operations**
+- Include request/trace IDs in all operations
+- Preserve context through async operations
+- Enable distributed tracing for debugging
+- Make operations traceable end-to-end
+- Propagate security context (user, permissions)
+
+**Write Comprehensive Tests**
+- Write unit tests for business logic (aim for 70%+ coverage)
+- Write integration tests for critical paths
+- Write end-to-end tests for key workflows
+- Mock external dependencies appropriately
+- Test edge cases and error scenarios
+- Use test utilities suited to the framework
+- Keep tests fast and deterministic
+
+**Follow Existing Patterns**
+- Match existing code style and formatting
+- Use established naming conventions
+- Follow existing error handling patterns
+- Replicate existing logging approaches
+- Respect architectural boundaries
+- Don't introduce new patterns without discussion
+
+**Keep Code Modular**
+- Separate concerns appropriately (SRP - Single Responsibility Principle)
+- Keep functions/methods focused and single-purpose
+- Use dependency injection for flexibility
+- Make code testable and maintainable
+- Avoid tight coupling between modules
+- Design for extensibility
+
+**Document When Necessary**
+- Add comments for non-obvious code
+- Document business rules and edge cases
+- Keep documentation close to code
+- Update docs when code changes
+- Use self-documenting code (clear names) over comments
+- Document API contracts and interfaces
+
+**Version Control Best Practices**
+- Write clear, descriptive commit messages
+- Make atomic commits (one logical change per commit)
+- Keep commits focused and small
+- Reference tickets/issues in commits
+- Don't commit commented-out code
+- Don't commit credentials or secrets
+
+**Performance Awareness**
+- Consider algorithmic complexity (Big O)
+- Avoid N+1 queries in database operations
+- Use appropriate caching strategies
+- Be mindful of memory usage
+- Profile before optimizing
+- Don't premature optimize
+
+**Security Consciousness**
+- Validate all inputs (never trust user input)
+- Use parameterized queries (prevent SQL injection)
+- Implement proper authentication and authorization
+- Follow principle of least privilege
+- Keep dependencies up to date
+- Use security scanners and linters
+
 **Use Vector DB Wisely**
 - Limit results to 5-10 maximum
 - Use for understanding, not locating
 - Switch to Serena for exact searches
 - Be specific in semantic queries
-```
+- Refine queries if results are too broad
 
 ---
 
-## SECTION 8: DON'Ts
+## SECTION 8: DON'Ts (Fully Generic)
 
-[Copy generic DON'Ts from previous prompt]
+### Critical Mistakes to Avoid
 
-**Add this:**
+**Don't Mix Business Logic with Presentation/Framework Code**
+- Keep business logic separate from HTTP/UI concerns
+- Don't put validation in presentation layer only
+- Business rules should be framework-agnostic
+- Keep core logic testable without framework
+- Don't leak domain concepts into infrastructure layer
 
-```markdown
+**Don't Hardcode Configuration**
+- Use configuration files or environment variables
+- Don't embed credentials in code
+- Make configuration environment-specific (dev/staging/prod)
+- Use configuration management tools
+- Don't hardcode URLs, ports, or timeouts
+- Use feature flags for conditional behavior
+
+**Don't Log Sensitive Information**
+- Never log passwords or authentication tokens
+- Don't log full credit card numbers or PII
+- Don't log API keys or secrets
+- Don't log sensitive business data
+- Use masking utilities when necessary
+- Be extra careful in production environments
+
+**Don't Make Changes Without Understanding Impact**
+- Always find all references before deleting code
+- Understand dependencies before modifying
+- Don't assume tests cover all cases
+- Search for configuration dependencies
+- Check database migrations and schema changes
+- Review API contracts before changing interfaces
+
+**Don't Mix Concerns in Changes**
+- Don't refactor while fixing bugs
+- Don't add features while deleting code
+- Keep changes focused on single purpose
+- Make one logical change per commit
+- Don't fix unrelated issues in the same PR
+- Separate formatting changes from logic changes
+
+**Don't Make Assumptions**
+- Don't assume build tools or processes
+- Don't assume deployment methods
+- Don't assume environment setup
+- Ask about environment if unsure
+- Don't add dependencies without confirmation
+- Don't assume data exists or is in expected format
+
+**Don't Skip Impact Analysis**
+- Always check what calls modified code
+- Verify tests still pass
+- Check for configuration dependencies
+- Consider downstream effects
+- Think about backwards compatibility
+- Consider rollback scenarios
+
+**Don't Ignore Existing Conventions**
+- Match existing file naming
+- Follow established directory structure
+- Use consistent formatting
+- Replicate existing patterns
+- Don't introduce personal style preferences
+- Respect team decisions even if you disagree
+
+**Don't Block Critical Operations**
+- Be aware of performance implications
+- Don't introduce blocking operations in async code
+- Don't hold locks longer than necessary
+- Consider scalability impact
+- Test with realistic load
+- Be mindful of thread pool exhaustion
+
+**Don't Skip Security Considerations**
+- Validate all inputs (sanitize and validate)
+- Follow principle of least privilege
+- Don't trust user input
+- Consider security in design, not as afterthought
+- Don't roll your own crypto
+- Use established security libraries
+
+**Don't Ignore Errors Silently**
+- Don't catch exceptions and do nothing
+- Don't return null instead of throwing exceptions
+- Don't swallow errors without logging
+- Handle or propagate, never ignore
+- Log context when catching exceptions
+
+**Don't Create God Objects/Classes**
+- Keep classes focused and cohesive
+- Don't let classes grow beyond 500 lines
+- Don't let methods grow beyond 50 lines
+- Split responsibilities when things get complex
+- Follow Single Responsibility Principle
+
+**Don't Copy-Paste Code**
+- Don't duplicate logic across files
+- Extract common functionality into utilities
+- Create abstractions for repeated patterns
+- DRY (Don't Repeat Yourself) principle
+- If you copy-paste, you probably need a function
+
+**Don't Commit Broken Code**
+- Always compile/build before committing
+- Run tests before pushing
+- Don't commit with failing tests
+- Don't commit with merge conflicts
+- Use pre-commit hooks to catch issues
+
 **Don't Misuse Vector Database**
 - Don't use for exact name searches (causes 50+ results)
 - Don't exceed 10 result limit (token bloat)
 - Don't use when Serena is more appropriate
 - Don't use for finding specific files/lines
-```
+- Remember: Vector DB for understanding, Serena for locating
+
+**Don't Over-Engineer**
+- Don't add abstraction layers prematurely
+- Don't optimize before measuring
+- Don't use design patterns unnecessarily
+- YAGNI (You Aren't Gonna Need It)
+- Start simple, refactor when needed
+
+**Don't Ignore Technical Debt**
+- Don't let "temporary" hacks become permanent
+- Document known issues and TODOs
+- Schedule time to pay down debt
+- Don't let debt accumulate unchecked
+- Refactor when you touch old code
+
+**Don't Deploy Without Testing**
+- Don't skip staging environments
+- Don't deploy on Friday afternoons
+- Don't deploy without rollback plan
+- Test in production-like environment first
+- Have monitoring and alerts ready
 
 ---
 
