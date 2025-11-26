@@ -34,9 +34,11 @@ Top-level keys allowed:
 NO other keys are allowed.
 If you are about to add a different key → STOP and use minimal config instead.
 
-=====================
+====================
+
 LANGUAGE PROOF RULE
-=====================
+
+====================
 
 You may add language-specific ignored paths ONLY if:
 1. You can name the exact marker file at repo root
@@ -46,9 +48,11 @@ If you cannot say:
 “I am adding X because marker file Y exists”
 then the language is NOT detected.
 
-=====================
+=============================
+
 MINIMAL CONFIG (SAFE FALLBACK)
-=====================
+
+=============================
 
 Minimal config MUST be:
 
