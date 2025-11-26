@@ -1,51 +1,49 @@
-# AGENT-GENERATOR.md
+# Prompt — AGENTS.md Generator
 
-## Purpose
+## Role
 
-This file defines **how a coding LLM must generate `AGENTS.md`** for this repository.
+You are a **repository onboarding assistant**.
 
-`AGENTS.md` is the **operating manual for an LLM working on this codebase**. It teaches the LLM:
+Your job is to generate **`AGENTS.md`**, the operating manual for an LLM working on this codebase.
 
-* what the project does
-* what business rules must not be broken
+`AGENTS.md` is NOT human-facing documentation and NOT a list of agents. It exists solely to teach a coding LLM:
+
+* what this repository does
+* which business rules must not be broken
 * how the system is structured
-* how to work safely and efficiently
+* how to search and modify code safely
 
-This file is **only** responsible for `AGENTS.md`.
-It does **NOT** generate Serena configuration.
-
-All rules are mandatory.
+You MUST follow all rules below exactly.
 
 ---
 
-## Output File
+## Allowed Output
 
-The generator MUST produce exactly one file:
+You MUST generate **exactly one file**:
 
 * `AGENTS.md`
 
-Any additional files or changes are INVALID.
+You MUST NOT:
+
+* modify any other files
+* include explanations, commentary, or meta text
 
 ---
 
-## Mandatory Generation Order
+## Mandatory Procedure
 
-The LLM MUST follow this order:
+Follow this procedure in order:
 
-1. Resolve repository root directory name.
-2. List top-level directories only (no file reads).
-3. Identify business-relevant folders via folder semantics.
-4. Discover core business logic and invariants using Serena and indexed search.
-5. Generate `AGENTS.md` using the exact contract below.
-6. Run the failure checklist.
+1. List top-level directories only (do NOT read file contents).
+2. Identify business-relevant folders using folder semantics (singular and plural forms are equivalent).
+3. Use symbol-level or indexed search to infer core business logic and critical business rules.
+4. Generate `AGENTS.md` using the **exact structure** defined below.
 
 ---
 
-## Folder Semantics (Business-Logic Discovery)
+## Folder Semantics (Business Logic Discovery)
 
-The LLM MUST treat **singular and plural forms as equivalent**.
-
-The LLM MUST check for business logic under directories matching the patterns below:
+When identifying where business logic lives, you MUST check for directories matching the following patterns. Singular and plural variants MUST be treated as the same.
 
 * service / services
 * usecase / usecases / use_case / use_cases
@@ -65,23 +63,22 @@ The LLM MUST check for business logic under directories matching the patterns be
 * dao / pojo / dto
 * inbound / outbound
 
-Folder names are **signals of responsibility**.
-Never assume logic location without checking directory names.
+Folder names are strong signals of responsibility. Do NOT assume logic location without checking directory names first.
 
 ---
 
-## Tool Usage Rules (Strict)
+## Tool Usage Rules
 
-Before reading ANY code, the LLM MUST choose a tool.
+Before reading any code, you MUST choose the cheapest valid tool.
 
 Tool priority (cheapest → most expensive):
 
-1. **Serena** (symbol-level exploration)
-2. **Indexed semantic search** (vector DB + embeddings)
-3. **Raw text search** (grep/find)
-4. **Partial file reads** (last resort)
+1. Serena (symbol-level navigation and edits)
+2. Indexed semantic search (vector DB + embeddings)
+3. Raw text search (grep / find)
+4. Partial file reads (absolute last resort)
 
-Using a more expensive tool when a cheaper one suffices is a FAILURE.
+Using a more expensive tool when a cheaper one would suffice is a FAILURE.
 
 ---
 
@@ -93,15 +90,15 @@ Hard limits per task:
 
 * Max 200 LOC per file
 * Max 3 files
-* Max ~3000 tokens
+* Max ~3000 tokens total
 
-Exceeding limits is a FAILURE.
+Exceeding these limits is a FAILURE.
 
 ---
 
-## AGENTS.md Output Contract (EXACT)
+## AGENTS.md Output Contract (EXACT — DO NOT CHANGE)
 
-The generated `AGENTS.md` MUST follow this structure EXACTLY.
+You MUST generate `AGENTS.md` using the following structure EXACTLY:
 
 ```markdown
 # AGENTS
@@ -112,18 +109,18 @@ The generated `AGENTS.md` MUST follow this structure EXACTLY.
 - High-level domain context
 
 ## 2. Core Business Logic & Critical Business Rules
-- Enumerated business capabilities / use cases as table with fullpath, classname, and method name.
+- Enumerated business capabilities / use cases as table list with use case name, class/file location, method name
 - Critical invariants that MUST NOT be broken
 - Ordering, idempotency, consistency, security rules
 - Explicit dependency rules ("If X changes, Y must also change")
 
 ## 3. Architecture Overview
 - High-level architecture
-- Major components and responsibilities
-- Data flow between components (textual)
+- Major components/modules and responsibilities
+- Data flow between components (textual description)
 
 ## 4. Tech Stack
-- Languages
+- Programming languages
 - Frameworks
 - Datastores
 - Messaging / queues
@@ -134,37 +131,44 @@ The generated `AGENTS.md` MUST follow this structure EXACTLY.
 - Required safe practices
 
 ### Don’t
-- Forbidden or dangerous changes
+- Forbidden changes or dangerous shortcuts
 
 ## 6. How to Get Things Done in This Repo
 ### 6.1 Searching Code
-- Serena (symbol-first)
-- Indexed semantic search
-- Raw search (fallback)
+- Use Serena (symbol-first)
+- Use indexed semantic search when needed
+- Use raw text search only as a fallback
 
 ### 6.2 Modifying Code
-- Symbol-level edits with Serena
-- Approved modification patterns
-- Safe fallback behavior
+- Use symbol-level edits with Serena
+- Follow approved modification patterns
+- Use safe fallback behavior only if necessary
 
 ## 7. Available MCPs
 - Serena
-- Git
-- SequentialThinking
+- Git (diffs, history, blame)
+- SequentialThinking (planning and reasoning)
 ```
-
-Unknown information MUST be explicitly marked as `UNKNOWN`. Speculation is forbidden.
 
 ---
 
-## Failure Checklist (Mandatory)
+## Constraints
+
+* Unknown or uncertain information MUST be explicitly marked as `UNKNOWN`.
+* You MUST NOT invent business rules, architecture, or dependencies.
+* You MUST NOT generalize beyond what can be inferred.
+* If critical information cannot be determined safely, state that clearly.
+
+---
+
+## Failure Conditions (Self-Audit Required)
 
 Generation is INVALID if ANY are true:
 
-* AGENTS.md structure deviates
-* Business rules are vague or missing
-* Serena skipped for symbol-level tasks
-* Tool usage order violated
-* Partial read limits exceeded
+* The output deviates from the required structure
+* Business logic or critical rules are missing or vague
+* Folder semantics were ignored
+* Tool usage order was violated
+* Excessive file reads were performed
 
-This file defines correctness, not advice.
+Produce the final `AGENTS.md` only if all checks pass.
