@@ -486,38 +486,39 @@ Limit: 5-10 results
 3. Plan changes based on references
 ```
 
-**Making changes:**
+**Workflow for additions:**
 ```
-Use Serena's symbol-level edit tools:
-- insert_after_symbol()
-- replace_symbol()
-- (Other Serena modification tools)
+1. Use Serena to explore structure: list_dir(), find_symbols_in_file()
+2. Use Serena to find similar symbols: find_symbol() for related classes
+3. If pattern unclear, use indexed search: "similar functionality" (limit 5-10)
+4. Understand pattern from Serena results
+5. Add new code using Serena's insert tools
 ```
 
 **Workflow for edits:**
 ```
-1. Find symbol with Serena
-2. Understand usage with find_referencing_symbols()
-3. Plan change (consider all references)
-4. Make surgical edit with Serena
-5. Verify no unintended impacts
-```
-
-**Workflow for additions:**
-```
-1. Find similar implementations (indexed search: "similar functionality")
-2. Locate exact files (Serena: find_symbol)
-3. Understand pattern
-4. Add new code following pattern
+1. Serena: find_symbol() to locate target
+2. Serena: find_referencing_symbols() to understand impact
+3. If implementation pattern unclear, indexed search: "similar pattern" (limit 5-10)
+4. Plan change considering all references
+5. Make surgical edit with Serena's replace/edit tools
 ```
 
 **Workflow for deletions:**
 ```
-1. Find symbol (Serena: find_symbol)
-2. Find ALL references (Serena: find_referencing_symbols)
+1. Serena: find_symbol() to locate target
+2. Serena: find_referencing_symbols() for ALL usages
 3. Assess impact (what breaks?)
-4. Remove from least dependent to most dependent
+4. Remove via Serena from least dependent to most dependent
 5. Clean up unused imports/configs
+```
+
+**Workflow for understanding patterns (discovery only):**
+```
+1. Indexed search: Query "implementation pattern" (limit 5-10)
+2. Serena: find_symbol() to verify exact locations
+3. Serena: find_referencing_symbols() for context
+4. Use findings to inform edits via Serena
 ```
 
 ---
